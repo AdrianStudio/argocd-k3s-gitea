@@ -3,7 +3,33 @@ Guide to deploy ArgoCD on K3S and connect it with Gitea
 
 My K3S cluster is built with 3 Raspberry Pis, a Pi-master, and 2 Pi-workers. Everything will be installed from the master downwards.
 
+**Step 1 - Create ArgoCD's namespace**
+
 First step is to create the **namespace**, a **namespace** is like a logical folder that separates workloads. ArgoCD will go in its own **namespace** _argocd_ to keep it isolated. You can use any name you want
 To create the namespace, we will use the command **_sudo kubectl create namespace argocd_** and then confirm its created with **_sudo kubectl get namespace_**.
 
 <img width="504" height="130" alt="image" src="https://github.com/user-attachments/assets/57d7cb0e-10b8-4dd3-a5df-3660214de0d0" />
+
+The next step is to use **Helm**, which is a Kubernetes package manager. The same way **_apt_** installs **Debian** packages, **Helm** installs apps in Kubernetes. A Helm "chart" is the package that contains all necessary YAML manifests to deploy an app.
+**ArgoCD** has its own official chart that we will use.
+
+**Sept 2 - Install ArgoCD**
+
+k3S already has **Helm** available. To install ArgoCD, we will use the official manifest; it's the best and most direct way to install it. We will use the command **_sudo kubectl apply -n argocd -f (and the official URL)_**
+
+<img width="1183" height="91" alt="image" src="https://github.com/user-attachments/assets/fc19b9e5-4641-4954-9fd7-c4b57cc7837f" />
+
+This will download the official ArgoCD manifest, and it creates all necessary resources in the namespace _argocd_, such as deployments, services, configmaps, RBAC, etc.
+Once the installation is done, we will check the available pods to confirm everything is running properly with the command **_sudo kubectl get pods -n argocd_**.
+
+<img width="815" height="169" alt="image" src="https://github.com/user-attachments/assets/74d18abb-37d9-47e9-b26d-6f577d439eac" />
+
+ArgoCD has a UI web. By default, the service _argocd-server_ is of type _ClusterIP_; only accessible from inside the cluster. To access from our web browser, we will need to expose it. We will do this with a **NodePort**, which will assign a fixed port to all the nodes in the cluster, to access from our local network.
+
+**Step 3 - Expose ArgoCD with NodePort**
+
+With the next command, we will change the type of service, from ClusterIP to NodePort and assign the port that we need, in this case 30443. And we will verify with **_sudo kubectl get svc argocd-server -n argocd_**
+
+<img width="1433" height="111" alt="image" src="https://github.com/user-attachments/assets/3537e4aa-0e63-44ca-a538-9e41456c0e1d" />
+
+
