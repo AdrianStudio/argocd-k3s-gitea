@@ -38,8 +38,16 @@ The credentials are:
   password: We will obtain it with a command
   <img width="1121" height="41" alt="image" src="https://github.com/user-attachments/assets/baf9c613-3eba-4c5a-b159-7529f4136b6b" />
 
-**Step 3 - Change ArgoCD's password**
+**Step 4 - Change ArgoCD's password**
 
 The initial password is temporary, and it has to be changed. On the start menu on the left, go to _User Info_, and you will see a button to update your password. The next step will be connecting Gitea.
 
 <img width="558" height="169" alt="image" src="https://github.com/user-attachments/assets/82ba29ee-5401-4b4a-b6f3-1f4ef617c808" />
+
+**Step 5 - Connect Gitea to ArgoCD**
+
+If you don't have a repository inside Gitea, you will have to create one. Once that's done, you will create a new folder inside. You can choose any name; I will create mine inside another folder where I manage all my K3S. This is where all the manifests that ArgoCD manages will go.
+
+In Gitea, you can't create an empty folder; you will have to click new file > and write it down like this: argocd/.gitkeep, so Gitea creates the folder _argocd_ and the file .gitkeep is an empty file used to keep empty folders active in Git.
+
+<img width="1105" height="271" alt="image" src="https://github.com/user-attachments/assets/87d25b80-ca51-4497-bccc-e68f741b594c" />
