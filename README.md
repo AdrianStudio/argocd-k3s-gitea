@@ -38,3 +38,8 @@ The credentials are:
   password: We will obtain it with a command
   <img width="1121" height="41" alt="image" src="https://github.com/user-attachments/assets/baf9c613-3eba-4c5a-b159-7529f4136b6b" />
 
+**Step 3 - Change ArgoCD's password**
+
+The initial password is temporary, and it has to be changed. On the start menu on the left, go to _User Info_, and you will see a button to update your password. The next step will be connecting Gitea.
+
+<img width="558" height="169" alt="image" src="https://github.com/user-attachments/assets/82ba29ee-5401-4b4a-b6f3-1f4ef617c808" />
