@@ -55,3 +55,7 @@ In Gitea, you can't create an empty folder; you will have to click new file > an
 **Step 6 - Connect Gitea's Repository to ArgoCD**
 
 This will tell ArgoCD where our repository is and how to access it; from this moment, ArgoCD will read the YAML files that you add to the repository. Once it detects changes to the folder, it will apply them automatically to the cluster.
+
+**This is how it works: You edit the YAML on Gitea > ArgoCD detects the change > it applies it to the cluster automatically.** Without this, ArgoCD won't know where to look. This is the bridge between Git and Kubernetes.
+
+To connect the repository to ArgoCD go to _Settings_ on the left side menu > _Repositories_ > _Connect Repo_
