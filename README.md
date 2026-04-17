@@ -51,3 +51,7 @@ If you don't have a repository inside Gitea, you will have to create one. Once t
 In Gitea, you can't create an empty folder; you will have to click new file > and write it down like this: argocd/.gitkeep, so Gitea creates the folder _argocd_ and the file .gitkeep is an empty file used to keep empty folders active in Git.
 
 <img width="1105" height="271" alt="image" src="https://github.com/user-attachments/assets/87d25b80-ca51-4497-bccc-e68f741b594c" />
+
+**Step 6 - Connect Gitea's Repository to ArgoCD**
+
+This will tell ArgoCD where our repository is and how to access it; from this moment, ArgoCD will read the YAML files that you add to the repository. Once it detects changes to the folder, it will apply them automatically to the cluster.
