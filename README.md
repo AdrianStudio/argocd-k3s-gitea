@@ -36,6 +36,5 @@ After running these commands and verifying that they applied, we will access Arg
 The credentials are:
   username: **admin**
   password: We will obtain it with a command
-
   <img width="1121" height="41" alt="image" src="https://github.com/user-attachments/assets/baf9c613-3eba-4c5a-b159-7529f4136b6b" />
 
