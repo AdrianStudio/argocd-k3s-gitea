@@ -60,6 +60,7 @@ This will tell ArgoCD where our repository is and how to access it; from this mo
 **This is how it works: You edit the YAML on Gitea > ArgoCD detects the change > it applies it to the cluster automatically.** Without this, ArgoCD won't know where to look. This is the bridge between Git and Kubernetes.
 
 To connect the repository to ArgoCD go to _Settings_ on the left side menu > _Repositories_ > _Connect Repo_
+
 <img width="1464" height="576" alt="image" src="https://github.com/user-attachments/assets/59a1f6f5-6c0a-47f2-a164-0df861f9475f" />
 
 Select via _HTTP/HTTPS_, name of your choice, project: default, your repository URL, and the username and password that you have set up on Gitea. And then click **Connect**
