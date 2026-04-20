@@ -12,6 +12,7 @@ To create the namespace, run _**sudo kubectl create namespace argocd**_, then co
 <img width="504" height="130" alt="image" src="https://github.com/user-attachments/assets/57d7cb0e-10b8-4dd3-a5df-3660214de0d0" />
 
 
+
 **Sept 2 - Install ArgoCD**
 
 K3S already has **Helm** available. **Helm** is a Kubernetes package manager; the same way apt installs Debian packages, **Helm** installs applications in Kubernetes. A **Helm** "chart" is the package that contains all the necessary YAML manifests to deploy an app.
