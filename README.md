@@ -120,7 +120,7 @@ Go to **ArgoCD UI > Applications > New App** and fill it like this:
 <img width="789" height="332" alt="image" src="https://github.com/user-attachments/assets/14b0e931-4d88-45f2-a00f-1e28f0b0b05c" />
 
 
-
+And once this is filled in, click create.
 
 
 
