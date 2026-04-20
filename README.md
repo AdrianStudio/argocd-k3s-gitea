@@ -141,11 +141,17 @@ Wait 30-60 seconds, and run **_sudo kubectl get pods -n (name)_**, you should se
 
 <img width="780" height="215" alt="image" src="https://github.com/user-attachments/assets/e679a9b9-c985-48e2-b923-d7112ebfb305" />
 
-After this, you can delete the .yaml test file, and you will see it also applies to your cluster. From here, everything you did on the cluster, you can do from Gitea, or any other Git environment you use and configure ArgoCD on. If you want to add something, you create the YAML on Gitea, if you want to scale a deployment, you edit the YAML on Gitea, if you want to delete a service, you delete the file on Gitea.
+After this, you can delete the .yaml test file, and you will see it also applies to your cluster.
+From this point, your Git repository is the single source of truth for your cluster:
+
+- Want to add a service? Create the YAML in Gitea.
+- Want to scale a deployment? Edit the YAML in Gitea.
+- Want to remove a service? Delete the file from Gitea.
 
 The real advantages that this provides are:
 
-- **Full history**: Every change made on the cluster is registered on Git with the date, author and commit message.
+- **Full history**: Every change made to the cluster is recorded in Git with date, author, and commit message.
 - **Instant Rollback**: If anything breaks, you run **_git revert_** and ArgoCD restores to the previous state.
-- **Reproducibility**: If a Pi, or any element of the Cluster, dies, you can rebuild the state of the cluster from Git in only a few minutes.
+- **Reproducibility**: if a node dies, you can rebuild the entire cluster state from Git in minutes.
+
 
