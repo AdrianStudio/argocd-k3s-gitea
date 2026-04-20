@@ -102,6 +102,7 @@ To create it, go to the repository you created, then into the folder, click add 
 
 <img width="793" height="217" alt="image" src="https://github.com/user-attachments/assets/42eff275-61cc-4aa3-82c7-2f30fb9fcca2" />
 
+
 <img width="926" height="564" alt="image" src="https://github.com/user-attachments/assets/afe7d0c0-1eb9-4620-9e4d-3c2e3e424a01" />
 
 
@@ -115,13 +116,17 @@ Go to **ArgoCD UI > Applications > New App** and fill it like this:
 
 <img width="810" height="456" alt="image" src="https://github.com/user-attachments/assets/fcdcc2dc-f96f-46a5-8136-1a97e077be06" />
 
+
 <img width="786" height="400" alt="image" src="https://github.com/user-attachments/assets/07498d4b-254f-4754-abb5-cd89c8ec5c35" />
+
 
 <img width="789" height="332" alt="image" src="https://github.com/user-attachments/assets/14b0e931-4d88-45f2-a00f-1e28f0b0b05c" />
 
 
-And once this is filled in, click create.
+And once this is filled in, click create. You should see the pipeline on the same menu, with a message displaying **Healthy + Synced**. Now your test nginx web should have loaded on your cluster, yo check run **_sudo kubectl get pods -n (name)_**, you should see nginx-test next to your other services.
 
+
+<img width="788" height="188" alt="image" src="https://github.com/user-attachments/assets/fe803a49-d9d3-44ea-b4cb-680aeda08710" />
 
 
 
