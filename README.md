@@ -5,17 +5,18 @@ My K3S cluster is built with 3 Raspberry Pis, a Pi-master, and 2 Pi-workers. Eve
 
 **Step 1 - Create ArgoCD's namespace**
 
-First step is to create the **namespace**, a **namespace** is like a logical folder that separates workloads. ArgoCD will go in its own **namespace** _argocd_ to keep it isolated. You can use any name you want
-To create the namespace, we will use the command **_sudo kubectl create namespace argocd_** and then confirm its created with **_sudo kubectl get namespace_**.
+The first step is to create the namespace. A namespace is like a logical folder that separates workloads. ArgoCD will go in its own namespace argocd to keep it isolated from other services. You can use any name you want.
+
+To create the namespace, run _**sudo kubectl create namespace argocd**_, then confirm it was created with _**sudo kubectl get namespaces**_.
 
 <img width="504" height="130" alt="image" src="https://github.com/user-attachments/assets/57d7cb0e-10b8-4dd3-a5df-3660214de0d0" />
 
-The next step is to use **Helm**, which is a Kubernetes package manager. The same way **_apt_** installs **Debian** packages, **Helm** installs apps in Kubernetes. A Helm "chart" is the package that contains all necessary YAML manifests to deploy an app.
-**ArgoCD** has its own official chart that we will use.
 
 **Sept 2 - Install ArgoCD**
 
-k3S already has **Helm** available. To install ArgoCD, we will use the official manifest; it's the best and most direct way to install it. We will use the command **_sudo kubectl apply -n argocd -f (and the official URL)_**
+K3S already has **Helm** available. **Helm** is a Kubernetes package manager; the same way apt installs Debian packages, **Helm** installs applications in Kubernetes. A **Helm** "chart" is the package that contains all the necessary YAML manifests to deploy an app.
+
+To install ArgoCD, we will use the official manifest; it's the most direct and recommended way. Run _**sudo kubectl apply -n argocd -f**_ followed by the official URL.
 
 <img width="1183" height="91" alt="image" src="https://github.com/user-attachments/assets/fc19b9e5-4641-4954-9fd7-c4b57cc7837f" />
 
@@ -139,3 +140,12 @@ Wait 30-60 seconds, and run **_sudo kubectl get pods -n (name)_**, you should se
 **_Git push > ArgoCD detects the change > applies to the cluster automatically_**
 
 <img width="780" height="215" alt="image" src="https://github.com/user-attachments/assets/e679a9b9-c985-48e2-b923-d7112ebfb305" />
+
+After this, you can delete the .yaml test file, and you will see it also applies to your cluster. From here, everything you did on the cluster, you can do from Gitea, or any other Git environment you use and configure ArgoCD on. If you want to add something, you create the YAML on Gitea, if you want to scale a deployment, you edit the YAML on Gitea, if you want to delete a service, you delete the file on Gitea.
+
+The real advantages that this provides are:
+
+- **Full history**: Every change made on the cluster is registered on Git with the date, author and commit message.
+- **Instant Rollback**: If anything breaks, you run **_git revert_** and ArgoCD restores to the previous state.
+- **Reproducibility**: If a Pi, or any element of the Cluster, dies, you can rebuild the state of the cluster from Git in only a few minutes.
+
