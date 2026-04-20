@@ -105,5 +105,23 @@ To create it, go to the repository you created, then into the folder, click add 
 <img width="926" height="564" alt="image" src="https://github.com/user-attachments/assets/afe7d0c0-1eb9-4620-9e4d-3c2e3e424a01" />
 
 
+**Step 8 - Create the app on ArgoCD**
+
+An app on ArgoCD is the object that connects everything; it tells ArgoCD, "check this folder on Gitea, make sure that the cluster replicates exactly what's on there"
+
+With _Automatic Sync_ activated, every time we do a commit on Gitea, ArgoCD will detect this, and it will apply the changes on the cluster, without having to edit anything. With _Self Heal_, if anyone deletes a pod manually, ArgoCD will restore it automatically from Git.
+
+Go to **ArgoCD UI > Applications > New App** and fill it like this:
+
+<img width="810" height="456" alt="image" src="https://github.com/user-attachments/assets/fcdcc2dc-f96f-46a5-8136-1a97e077be06" />
+
+<img width="786" height="400" alt="image" src="https://github.com/user-attachments/assets/07498d4b-254f-4754-abb5-cd89c8ec5c35" />
+
+<img width="789" height="332" alt="image" src="https://github.com/user-attachments/assets/14b0e931-4d88-45f2-a00f-1e28f0b0b05c" />
+
+
+
+
+
 
 
