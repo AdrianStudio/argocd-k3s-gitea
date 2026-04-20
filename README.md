@@ -64,8 +64,46 @@ To connect the repository to ArgoCD go to _Settings_ on the left side menu > _Re
 <img width="1464" height="576" alt="image" src="https://github.com/user-attachments/assets/59a1f6f5-6c0a-47f2-a164-0df861f9475f" />
 
 
+
 Select via _HTTP/HTTPS_, name of your choice, project: default, your repository URL, and the username and password that you have set up on Gitea. And then click **Connect**
 Once you click connect, you should see the repository after a few seconds, with a Succesful green tick, meaning its connected.
 
 <img width="1261" height="187" alt="image" src="https://github.com/user-attachments/assets/3764dc1c-32be-479c-9dca-bc99756de43f" />
+
+
+**Step 7 - Create a test Manifest on Gitea**
+
+A manifest is a _YAML_ file that describes to Kubernetes what you want to deploy. In this case, we will deploy an nginx test server. ArgoCD will read this file from Gitea, and it will apply it to the cluster automatically.
+
+Create the file on the route you created the file, in my case _k3s/argocd/nginx-test.yaml_ with this content:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-test
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-test
+  template:
+    metadata:
+      labels:
+        app: nginx-test
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+
+To create it, go to the repository you created, then into the folder, click add file, paste the content and commit.
+
+<img width="793" height="217" alt="image" src="https://github.com/user-attachments/assets/42eff275-61cc-4aa3-82c7-2f30fb9fcca2" />
+
+<img width="926" height="564" alt="image" src="https://github.com/user-attachments/assets/afe7d0c0-1eb9-4620-9e4d-3c2e3e424a01" />
+
+
+
 
