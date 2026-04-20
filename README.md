@@ -63,5 +63,9 @@ To connect the repository to ArgoCD go to _Settings_ on the left side menu > _Re
 
 <img width="1464" height="576" alt="image" src="https://github.com/user-attachments/assets/59a1f6f5-6c0a-47f2-a164-0df861f9475f" />
 
+
 Select via _HTTP/HTTPS_, name of your choice, project: default, your repository URL, and the username and password that you have set up on Gitea. And then click **Connect**
+Once you click connect, you should see the repository after a few seconds, with a Succesful green tick, meaning its connected.
+
+<img width="1261" height="187" alt="image" src="https://github.com/user-attachments/assets/3764dc1c-32be-479c-9dca-bc99756de43f" />
 
