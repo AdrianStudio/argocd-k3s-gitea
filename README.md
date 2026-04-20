@@ -128,5 +128,14 @@ And once this is filled in, click create. You should see the pipeline on the sam
 
 <img width="788" height="188" alt="image" src="https://github.com/user-attachments/assets/fe803a49-d9d3-44ea-b4cb-680aeda08710" />
 
+**Step 9 - Verify the complete GitOps pipeline**
 
+Now we are going to demonstrate that the pipeline works properly, we will make a change on Gitea, and we will see how ArgoCD applies it automatically without touching the cluster.
 
+Go to **Gite > repository > modify the nginx-text.yaml file > change replicas:1 to replicas: 2 > Commit**
+
+Wait 30-60 seconds, and run **_sudo kubectl get pods -n (name)_**, you should see 2 nginx-test pods instead of 1. This confirms that the complete flux works:
+
+**_Git push > ArgoCD detects the change > applies to the cluster automatically_**
+
+<img width="780" height="215" alt="image" src="https://github.com/user-attachments/assets/e679a9b9-c985-48e2-b923-d7112ebfb305" />
