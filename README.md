@@ -1,84 +1,96 @@
 # argocd-k3s-gitea
-Guide to deploy ArgoCD on K3S and connect it with Gitea
+Guide to deploy ArgoCD on K3s and connect it with Gitea
 
-My K3S cluster is built with 3 Raspberry Pis, a Pi-master, and 2 Pi-workers. Everything will be installed from the master downwards.
+My K3s cluster is built with 3 Raspberry Pis, a Pi-master, and 2 Pi-workers. Everything will be installed from the master downwards.
+
+---
 
 **Step 1 - Create ArgoCD's namespace**
 
-The first step is to create the namespace. A namespace is like a logical folder that separates workloads. ArgoCD will go in its own namespace argocd to keep it isolated from other services. You can use any name you want.
+The first step is to create the namespace. A namespace is like a logical folder that separates workloads. ArgoCD will go in its own namespace `argocd` to keep it isolated from other services. You can use any name you want.
 
-To create the namespace, run _**sudo kubectl create namespace argocd**_, then confirm it was created with _**sudo kubectl get namespaces**_.
+To create the namespace, run `sudo kubectl create namespace argocd`, then confirm it was created with `sudo kubectl get namespaces`.
 
 <img width="504" height="130" alt="image" src="https://github.com/user-attachments/assets/57d7cb0e-10b8-4dd3-a5df-3660214de0d0" />
 
+---
 
+**Step 2 - Install ArgoCD**
 
-**Sept 2 - Install ArgoCD**
+K3s already has **Helm** available. **Helm** is a Kubernetes package manager; the same way `apt` installs Debian packages, **Helm** installs applications in Kubernetes. A **Helm** "chart" is the package that contains all the necessary YAML manifests to deploy an app.
 
-K3S already has **Helm** available. **Helm** is a Kubernetes package manager; the same way apt installs Debian packages, **Helm** installs applications in Kubernetes. A **Helm** "chart" is the package that contains all the necessary YAML manifests to deploy an app.
-
-To install ArgoCD, we will use the official manifest; it's the most direct and recommended way. Run _**sudo kubectl apply -n argocd -f**_ followed by the official URL.
+To install ArgoCD, we will use the official manifest; it's the most direct and recommended way. Run `sudo kubectl apply -n argocd -f` followed by the official URL.
 
 <img width="1183" height="91" alt="image" src="https://github.com/user-attachments/assets/fc19b9e5-4641-4954-9fd7-c4b57cc7837f" />
 
-This will download the official ArgoCD manifest, and it creates all necessary resources in the namespace _argocd_, such as deployments, services, configmaps, RBAC, etc.
-Once the installation is done, we will check the available pods to confirm everything is running properly with the command **_sudo kubectl get pods -n argocd_**.
+This will download the official ArgoCD manifest and create all necessary resources in the namespace `argocd`, such as deployments, services, configmaps, RBAC, etc.
+
+Once the installation is done, check the available pods to confirm everything is running properly with `sudo kubectl get pods -n argocd`.
 
 <img width="815" height="169" alt="image" src="https://github.com/user-attachments/assets/74d18abb-37d9-47e9-b26d-6f577d439eac" />
 
-ArgoCD has a UI web. By default, the service _argocd-server_ is of type _ClusterIP_; only accessible from inside the cluster. To access from our web browser, we will need to expose it. We will do this with a **NodePort**, which will assign a fixed port to all the nodes in the cluster, to access from our local network.
+ArgoCD has a web UI. By default, the service `argocd-server` is of type _ClusterIP_ — only accessible from inside the cluster. To access it from a browser, we need to expose it with a **NodePort**, which assigns a fixed port to all nodes in the cluster.
+
+---
 
 **Step 3 - Expose ArgoCD with NodePort**
 
-With the next command, we will change the type of service, from ClusterIP to NodePort and assign the port that we need, in this case 30443. And we will verify with **_sudo kubectl get svc argocd-server -n argocd_**
+The following command changes the service type from `ClusterIP` to `NodePort` and assigns port `30443`. Verify with `sudo kubectl get svc argocd-server -n argocd`.
 
 <img width="1433" height="111" alt="image" src="https://github.com/user-attachments/assets/3537e4aa-0e63-44ca-a538-9e41456c0e1d" />
 
-After running these commands and verifying that they applied, we will access ArgoCD from our web browser, entering the Cluster's/Node IP and the port we assigned. 
-The credentials are:
-  username: **admin**
-  password: We will obtain it with a command
-  <img width="1121" height="41" alt="image" src="https://github.com/user-attachments/assets/baf9c613-3eba-4c5a-b159-7529f4136b6b" />
+After running these commands, access ArgoCD from your browser using the node IP and the assigned port. The credentials are:
+
+- **Username:** `admin`
+- **Password:** retrieve it with the following command:
+
+<img width="1121" height="41" alt="image" src="https://github.com/user-attachments/assets/baf9c613-3eba-4c5a-b159-7529f4136b6b" />
+
+---
 
 **Step 4 - Change ArgoCD's password**
 
-The initial password is temporary, and it has to be changed. On the start menu on the left, go to _User Info_, and you will see a button to update your password. The next step will be connecting Gitea.
+The initial password is temporary and must be changed. In the left sidebar, go to _User Info_ and click the button to update your password.
 
 <img width="558" height="169" alt="image" src="https://github.com/user-attachments/assets/82ba29ee-5401-4b4a-b6f3-1f4ef617c808" />
 
-**Step 5 - Connect Gitea to ArgoCD**
+---
 
-If you don't have a repository inside Gitea, you will have to create one. Once that's done, you will create a new folder inside. You can choose any name; I will create mine inside another folder where I manage all my K3S. This is where all the manifests that ArgoCD manages will go.
+**Step 5 - Create a folder in Gitea for the manifests**
 
-In Gitea, you can't create an empty folder; you will have to click new file > and write it down like this: argocd/.gitkeep, so Gitea creates the folder _argocd_ and the file .gitkeep is an empty file used to keep empty folders active in Git.
+If you don't have a repository in Gitea, create one. Once that's done, create a new folder inside it — this is where all the manifests that ArgoCD manages will go. You can choose any name and location.
+
+In Gitea, you can't create an empty folder directly. Click _Add file_ and write the path as `argocd/.gitkeep` — Gitea will create the `argocd` folder automatically. The `.gitkeep` file is an empty file used by convention to keep empty folders tracked in Git.
 
 <img width="1105" height="271" alt="image" src="https://github.com/user-attachments/assets/87d25b80-ca51-4497-bccc-e68f741b594c" />
 
+---
 
-**Step 6 - Connect Gitea's Repository to ArgoCD**
+**Step 6 - Connect Gitea's repository to ArgoCD**
 
-This will tell ArgoCD where our repository is and how to access it; from this moment, ArgoCD will read the YAML files that you add to the repository. Once it detects changes to the folder, it will apply them automatically to the cluster.
+This tells ArgoCD where your repository is and how to access it. From this moment, ArgoCD will read the YAML files you add to the repository and apply them automatically to the cluster once it detects changes.
 
-**This is how it works: You edit the YAML on Gitea > ArgoCD detects the change > it applies it to the cluster automatically.** Without this, ArgoCD won't know where to look. This is the bridge between Git and Kubernetes.
+> **This is how it works:** You edit the YAML on Gitea → ArgoCD detects the change → it applies it to the cluster automatically. Without this step, ArgoCD won't know where to look. This is the bridge between Git and Kubernetes.
 
-To connect the repository to ArgoCD go to _Settings_ on the left side menu > _Repositories_ > _Connect Repo_
+Go to _Settings_ on the left sidebar → _Repositories_ → _Connect Repo_.
 
 <img width="1464" height="576" alt="image" src="https://github.com/user-attachments/assets/59a1f6f5-6c0a-47f2-a164-0df861f9475f" />
 
+Select _VIA HTTP/HTTPS_, give it a name, set project to `default`, enter your repository URL, and your Gitea username and password. Click **Connect**.
 
-
-Select via _HTTP/HTTPS_, name of your choice, project: default, your repository URL, and the username and password that you have set up on Gitea. And then click **Connect**
-Once you click connect, you should see the repository after a few seconds, with a Succesful green tick, meaning its connected.
+After a few seconds you should see the repository listed with a green **Successful** status.
 
 <img width="1261" height="187" alt="image" src="https://github.com/user-attachments/assets/3764dc1c-32be-479c-9dca-bc99756de43f" />
 
+---
 
-**Step 7 - Create a test Manifest on Gitea**
+**Step 7 - Create a test manifest in Gitea**
 
-A manifest is a _YAML_ file that describes to Kubernetes what you want to deploy. In this case, we will deploy an nginx test server. ArgoCD will read this file from Gitea, and it will apply it to the cluster automatically.
+A **manifest** is a YAML file that describes to Kubernetes what you want to deploy. In this case, we will deploy a test nginx server. ArgoCD will read this file from Gitea and apply it to the cluster automatically.
 
-Create the file on the route you created the file, in my case _k3s/argocd/nginx-test.yaml_ with this content:
+Create the file at `k3s/argocd/nginx-test.yaml` with the following content:
 
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -99,60 +111,64 @@ spec:
         image: nginx:alpine
         ports:
         - containerPort: 80
+```
 
-To create it, go to the repository you created, then into the folder, click add file, paste the content and commit.
+In Gitea, go to the repository → open the folder → click _Add file_ → paste the content → commit.
 
 <img width="793" height="217" alt="image" src="https://github.com/user-attachments/assets/42eff275-61cc-4aa3-82c7-2f30fb9fcca2" />
 
-
 <img width="926" height="564" alt="image" src="https://github.com/user-attachments/assets/afe7d0c0-1eb9-4620-9e4d-3c2e3e424a01" />
 
+---
 
-**Step 8 - Create the app on ArgoCD**
+**Step 8 - Create the Application in ArgoCD**
 
-An app on ArgoCD is the object that connects everything; it tells ArgoCD, "check this folder on Gitea, make sure that the cluster replicates exactly what's on there"
+An **Application** in ArgoCD is the object that connects everything. It tells ArgoCD: _"monitor this folder in Gitea and make sure the cluster always matches exactly what's there."_
 
-With _Automatic Sync_ activated, every time we do a commit on Gitea, ArgoCD will detect this, and it will apply the changes on the cluster, without having to edit anything. With _Self Heal_, if anyone deletes a pod manually, ArgoCD will restore it automatically from Git.
+With _Automatic Sync_ enabled, every time you push a commit to Gitea, ArgoCD detects the change and applies it to the cluster without any manual intervention. With _Self Heal_ enabled, if anyone deletes a pod manually, ArgoCD restores it automatically from Git.
 
-Go to **ArgoCD UI > Applications > New App** and fill it like this:
+Go to **ArgoCD UI → Applications → New App** and fill it in as follows:
 
 <img width="810" height="456" alt="image" src="https://github.com/user-attachments/assets/fcdcc2dc-f96f-46a5-8136-1a97e077be06" />
 
-
 <img width="786" height="400" alt="image" src="https://github.com/user-attachments/assets/07498d4b-254f-4754-abb5-cd89c8ec5c35" />
-
 
 <img width="789" height="332" alt="image" src="https://github.com/user-attachments/assets/14b0e931-4d88-45f2-a00f-1e28f0b0b05c" />
 
-
-And once this is filled in, click create. You should see the pipeline on the same menu, with a message displaying **Healthy + Synced**. Now your test nginx web should have loaded on your cluster, yo check run **_sudo kubectl get pods -n (name)_**, you should see nginx-test next to your other services.
-
+Click **Create**. You should see the application listed with **Healthy + Synced** status. To confirm the test nginx was deployed, run `sudo kubectl get pods -n homelab` — you should see `nginx-test` alongside your other services.
 
 <img width="788" height="188" alt="image" src="https://github.com/user-attachments/assets/fe803a49-d9d3-44ea-b4cb-680aeda08710" />
 
+---
+
 **Step 9 - Verify the complete GitOps pipeline**
 
-Now we are going to demonstrate that the pipeline works properly, we will make a change on Gitea, and we will see how ArgoCD applies it automatically without touching the cluster.
+Now we'll prove the pipeline works end to end. Make a change in Gitea and watch ArgoCD apply it automatically — no touching the cluster directly.
 
-Go to **Gite > repository > modify the nginx-text.yaml file > change replicas:1 to replicas: 2 > Commit**
+Go to **Gitea → repository → edit `nginx-test.yaml` → change `replicas: 1` to `replicas: 2` → commit**.
 
-Wait 30-60 seconds, and run **_sudo kubectl get pods -n (name)_**, you should see 2 nginx-test pods instead of 1. This confirms that the complete flux works:
+Wait 30–60 seconds and run `sudo kubectl get pods -n homelab`. You should see 2 `nginx-test` pods instead of 1. This confirms the full flow works:
 
-**_Git push > ArgoCD detects the change > applies to the cluster automatically_**
+> **Git push → ArgoCD detects the change → applies to the cluster automatically**
 
 <img width="780" height="215" alt="image" src="https://github.com/user-attachments/assets/e679a9b9-c985-48e2-b923-d7112ebfb305" />
 
-After this, you can delete the .yaml test file, and you will see it also applies to your cluster.
+After verifying, delete the `nginx-test.yaml` file from Gitea. With **Prune Resources** enabled, ArgoCD will automatically remove the deployment from the cluster as well.
+
 From this point, your Git repository is the single source of truth for your cluster:
 
 - Want to add a service? Create the YAML in Gitea.
 - Want to scale a deployment? Edit the YAML in Gitea.
 - Want to remove a service? Delete the file from Gitea.
 
-The real advantages that this provides are:
+**The real advantages this provides:**
 
-- **Full history**: Every change made to the cluster is recorded in Git with date, author, and commit message.
-- **Instant Rollback**: If anything breaks, you run **_git revert_** and ArgoCD restores to the previous state.
-- **Reproducibility**: if a node dies, you can rebuild the entire cluster state from Git in minutes.
+- **Full history** — every change made to the cluster is recorded in Git with date, author, and commit message.
+- **Instant rollback** — if anything breaks, run `git revert` and ArgoCD restores the previous state.
+- **Reproducibility** — if a node dies, you can rebuild the entire cluster state from Git in minutes.
 
+---
 
+## Found this useful?
+
+If this guide helped you set up ArgoCD on K3s with Gitea, feel free to ⭐ the repo. If you run into issues or have suggestions, open an issue — happy to help. This is part of a larger homelab project where I document everything I build and learn, so contributions and feedback are always welcome.
