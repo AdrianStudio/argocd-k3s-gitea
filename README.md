@@ -10,9 +10,11 @@ I implemented GitOps with ArgoCD and Gitea to solve this. Instead of running com
 
 The real advantages this gives me day to day:
 
-_Visual deployment feedback:_ ArgoCD shows exactly what's happening during a sync, surfaces errors clearly, and confirms the health of every resource in the namespace
-_No direct cluster management:_ I don't create or delete namespaces, deployments, or services manually. Git is the only interface
-_Production-like workflow:_ the same GitOps principles used in real engineering teams at scale, running on Raspberry Pis
+**_Visual deployment feedback:_** ArgoCD shows exactly what's happening during a sync, surfaces errors clearly, and confirms the health of every resource in the namespace
+
+**_No direct cluster management:_** I don't create or delete namespaces, deployments, or services manually. Git is the only interface
+
+**_Production-like workflow:_** the same GitOps principles used in real engineering teams at scale, running on Raspberry Pis
 
 This turns a homelab into something that operates like a real platform, where Git is the source of truth and the cluster reflects exactly what's in the repository at all times.
 
