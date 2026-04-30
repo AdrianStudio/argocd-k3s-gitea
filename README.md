@@ -3,6 +3,10 @@ Guide to deploy ArgoCD on K3s and connect it with Gitea
 
 My K3s cluster is built with 3 Raspberry Pis, a Pi-master, and 2 Pi-workers. Everything will be installed from the master downwards.
 
+
+<img width="949" height="466" alt="image" src="https://github.com/user-attachments/assets/db4483bf-bded-47d9-9ce1-0a674e962ff1" />
+
+
 **Why GitOps? The decision behind this setup**
 
 Managing a K3s cluster manually, applying manifests with kubectl, debugging errors through terminal output, tracking what's deployed where, gets complex fast. Every change requires direct cluster access, and there's no single source of truth for what's actually running.
